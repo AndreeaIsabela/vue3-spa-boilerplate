@@ -37,33 +37,20 @@ const authenticate = handleSubmit(async values => {
 </script>
 
 <template lang="pug">
-<div class="container">
-  <div class="row">
-    <div id="login" class="col-md-4 offset-md-4 pt-5">
-      <h1 class="text-center pt-5 pb-5">Log In</h1>
-
-      <form @submit="authenticate">
-        <div class="form-group">
-          <input class="form-control" name="email" type="text" v-model="email" :bind="emailAttrs" placeholder="john@doe.com" />
-
-          <div v-if="errors.email && meta.touched" class="validation-error">
-            <span>{{ errors.email }}</span>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <input class="form-control" name="password" type="password" v-model="password" :bind="passwordAttrs" placeholder="Password" />
-
-          <div v-if="errors.password && meta.touched" class="validation-error">
-            <span>{{ errors.password }}</span>
-          </div>
-        </div>
-      
-        <button class="btn btn-primary" type="submit">Log In</button>
-      </form>
-    </div>
-  </div>
-</div>
+.container
+  .row
+    #login.col-md-4.offset-md-4.pt-5
+      h1.text-center.pt-5.pb-5 Log In
+      form(@submit='authenticate')
+        .form-group
+          input.form-control(name='email' type='text' v-model='email' :bind='emailAttrs' placeholder='john@doe.com')
+          .validation-error(v-if='errors.email && meta.touched')
+            span {{ errors.email }}
+        .form-group
+          input.form-control(name='password' type='password' v-model='password' :bind='passwordAttrs' placeholder='Password')
+          .validation-error(v-if='errors.password && meta.touched')
+            span {{ errors.password }}
+        button.btn.btn-primary(type='submit') Log In
 </template>
 
 <style>

@@ -3,7 +3,7 @@ import NavigationBar from '@/components/NavigationBar.vue'
 </script>
 
 <template lang="pug">
-  navigation-bar
+navigation-bar
 
-  router-view
+router-view
 </template>

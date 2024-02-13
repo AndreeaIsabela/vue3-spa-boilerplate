@@ -19,23 +19,17 @@ nav#navbar.navbar.navbar-expand-lg.bg-light
     button.navbar-toggler(v-if='userStore.isLoggedIn' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
       span.navbar-toggler-icon
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-        <li class="nav-item" v-if='!userStore.isLoggedIn'>
-          <router-link :to="{ name: 'login' }" class="nav-link">Login</router-link>
-        </li>
+    navbarNav.collapse.navbar-collapse
+      ul.navbar-nav.ms-auto.mt-2.mt-lg-0
+        li.nav-item(v-if='!userStore.isLoggedIn')
+          router-link.nav-link(:to="{ name: 'login' }") Login
 
-        <li class="nav-item" v-if='!userStore.isLoggedIn'>
-          <router-link :to="{ name: 'signup' }" class="nav-link">Sign Up</router-link>
-        </li>
+        li.nav-item(v-if='!userStore.isLoggedIn')
+          router-link.nav-link(:to="{ name: 'signup' }") Sign Up
 
-        <li class="nav-item" v-if='userStore.isLoggedIn'>
-          <router-link :to="{ name: 'dashboard' }" class="nav-link">Dashboard</router-link>
-        </li>
+        li.nav-item(v-if='userStore.isLoggedIn')
+          router-link.nav-link(:to="{ name: 'dashboard' }") Dashboard
 
-        <li class="nav-item" v-if='userStore.isLoggedIn'>
-          <a class="nav-link ps-4 pe-5" href='#' @click.prevent='logOut()'>Log out</a>
-        </li>
-      </ul>
-    </div>
+        li.nav-item(v-if='userStore.isLoggedIn')
+          a.nav-link.ps-4.pe-5(href='#' @click.prevent='logOut()') Log out
 </template>
