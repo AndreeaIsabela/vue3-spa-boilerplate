@@ -11,7 +11,7 @@ const router: Router = useRouter();
 const loginSchema = object({
   email: string().required().email(),
   password: string().required().min(8),
-  passwordConfirmation: string().oneOf([ref('password')], 'Passwords must match')
+  passwordConfirmation: string().required().oneOf([ref('password')], 'passwords do not match')
 });
 const { errors, defineField, meta, handleSubmit } = useForm({ validationSchema: loginSchema });
 const [ email, emailAttrs ] = defineField('email', {
@@ -61,14 +61,14 @@ const register = handleSubmit(async values => {
             span {{ errors.password }}
         .form-group
           input.form-control(name='password-confirmation' type='password' v-model='passwordConfirmation' :bind='passwordConfirmationAttrs' placeholder='Password confirmation')
-          .validation-error(v-if='errors.password && meta.touched')
-            span {{ errors.password }}
+          .validation-error(v-if='errors.passwordConfirmation && meta.touched')
+            span {{ errors.passwordConfirmation }}
         button.btn.btn-primary(type='submit') Sign up
 </template>
 
 <style>
 .validation-error {
   color: red;
-  margin-top: 10px;
+  margin: 2px 0 5px 0;
 }
 </style>
