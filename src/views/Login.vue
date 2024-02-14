@@ -42,20 +42,25 @@ const authenticate = handleSubmit(async values => {
     #login.col-md-4.offset-md-4.pt-5
       h1.text-center.pt-5.pb-5 Log In
       form(@submit='authenticate')
-        .form-group
-          input.form-control(name='email' type='text' v-model='email' :bind='emailAttrs' placeholder='john@doe.com')
+        .form-group(:class='{"has-danger": errors.email && meta.touched}')
+          .form-floating
+            input.form-control(name='email' type='text' :class='{"is-invalid": errors.email && meta.touched}' v-model='email' :bind='emailAttrs' placeholder='Email address')
+            label(for="email") Email address
           .validation-error(v-if='errors.email && meta.touched')
             span {{ errors.email }}
-        .form-group
-          input.form-control(name='password' type='password' v-model='password' :bind='passwordAttrs' placeholder='Password')
+        .form-group.mt-4.mb-4(:class='{"has-danger": errors.password && meta.touched}')
+          .form-floating
+            input.form-control(name='password' :class='{"is-invalid": errors.password && meta.touched}' type='password' v-model='password' :bind='passwordAttrs' placeholder='Password')
+            label(for="password") Password
           .validation-error(v-if='errors.password && meta.touched')
             span {{ errors.password }}
-        button.btn.btn-primary(type='submit') Log In
+        button.btn.btn-info.w-100(type='submit') Log In
 </template>
 
 <style>
 .validation-error {
-  color: red;
-  margin-top: 10px;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: var(--bs-form-invalid-color);
 }
 </style>

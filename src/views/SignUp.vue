@@ -1,17 +1,18 @@
 <script lang="ts" setup>
+import * as yup from 'yup';
 import { useForm } from 'vee-validate';
-import { object, string, ref } from 'yup';
 import { useRouter } from 'vue-router';
 import type { Router } from 'vue-router';
-
+import type { Ref } from 'vue';
+import { ref } from 'vue';
 import { userApi } from '@/api/user';
 
 const router: Router = useRouter();
 
-const loginSchema = object({
-  email: string().required().email(),
-  password: string().required().min(8),
-  passwordConfirmation: string().required().oneOf([ref('password')], 'passwords do not match')
+const loginSchema = yup.object({
+  email: yup.string().required().email(),
+  password: yup.string().required().min(8),
+  passwordConfirmation: yup.string().required().oneOf([yup.ref('password')], 'passwords do not match')
 });
 const { errors, defineField, meta, handleSubmit } = useForm({ validationSchema: loginSchema });
 const [ email, emailAttrs ] = defineField('email', {
@@ -25,7 +26,7 @@ const [ password, passwordAttrs ] = defineField('password', {
 const [ passwordConfirmation, passwordConfirmationAttrs ] = defineField('passwordConfirmation', {
   validateOnModelUpdate: false
 });
-
+const registerStatus: Ref<String> = ref('');
 /**
  * Authenticate the given user.
  *
@@ -37,10 +38,9 @@ const register = handleSubmit(async values => {
       email: values.email,
       password: values.password
     });
-
-    alert('Registered!')
+    registerStatus.value = 'success';
   } catch (error) {
-    alert('Whoops, something went wrong. Please try again.');
+    registerStatus.value = 'error';
   }
 })
 </script>
@@ -51,24 +51,46 @@ const register = handleSubmit(async values => {
     #login.col-md-4.offset-md-4.pt-5
       h1.text-center.pt-5.pb-5 Sign Up
       form(@submit='register')
-        .form-group
-          input.form-control(name='email' type='text' v-model='email' :bind='emailAttrs' placeholder='john@doe.com')
+        .form-group(:class='{"has-danger": errors.email && meta.touched}')
+          .form-floating
+            input.form-control(name='email' type='text' v-model='email' :class='{"is-invalid": errors.email && meta.touched}' :bind='emailAttrs' placeholder='john@doe.com')
+            label(for="email") Email address
           .validation-error(v-if='errors.email && meta.touched')
             span {{ errors.email }}
-        .form-group
-          input.form-control(name='password' type='password' v-model='password' :bind='passwordAttrs' placeholder='Password')
+
+        .form-group.mt-4.mb-4(:class='{"has-danger": errors.password && meta.touched}')
+          .form-floating
+            input.form-control(name='password' type='password' :class='{"is-invalid": errors.password && meta.touched}' v-model='password' :bind='passwordAttrs' placeholder='Password')
+            label(for="password") Password
           .validation-error(v-if='errors.password && meta.touched')
             span {{ errors.password }}
-        .form-group
-          input.form-control(name='password-confirmation' type='password' v-model='passwordConfirmation' :bind='passwordConfirmationAttrs' placeholder='Password confirmation')
+
+        .form-group.mb-4(:class='{"has-danger": errors.passwordConfirmation && meta.touched}')
+          .form-floating
+            input.form-control(name='password-confirmation' type='password' :class='{"is-invalid": errors.passwordConfirmation && meta.touched}' v-model='passwordConfirmation' :bind='passwordConfirmationAttrs' placeholder='Password confirmation')
+            label(for="password-confirmation") Password Confirmation
           .validation-error(v-if='errors.passwordConfirmation && meta.touched')
             span {{ errors.passwordConfirmation }}
-        button.btn.btn-primary(type='submit') Sign up
+
+        button.btn.btn-info.w-100.mb-4(type='submit') Sign up
+        .alert.alert-dismissible.alert-success(v-if='registerStatus==="success"')
+          button.btn-close(type='button' data-bs-dismiss='alert' @click='registerStatus = ""')
+          strong Well done!
+          |  You successfully  
+          a.alert-link(href='#') signed up
+          | .
+        .alert.alert-dismissible.alert-danger(v-if='registerStatus==="error"')
+          button.btn-close(type='button' data-bs-dismiss='alert'  @click='registerStatus = ""')
+          strong Error
+          |  Something went  
+          a.alert-link(href='#') wrong
+          | . Try again later
 </template>
 
 <style>
 .validation-error {
-  color: red;
-  margin: 2px 0 5px 0;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: var(--bs-form-invalid-color);
 }
 </style>
