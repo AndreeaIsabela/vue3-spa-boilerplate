@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { userStore } from '@/stores';
 import { useRouter } from 'vue-router';
+import { useDark, useToggle } from '@vueuse/core'
+
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 
 const router = useRouter();
 
@@ -32,4 +36,21 @@ nav#navbar.navbar.navbar-expand-lg.bg-body-tertiary
 
         li.nav-item(v-if='userStore.isLoggedIn')
           a.nav-link.ps-4.pe-5(href='#' @click.prevent='logOut()') Log out
+
+        li.nav-item.d-flex.align-items-center
+          fieldset.form-group
+            .form-check.form-switch
+              input#flexSwitchCheckDefault.form-check-input(type='checkbox' :checked='isDark' @click='toggleDark()')
+
 </template>
+<style>
+.form-check.form-switch > input {
+  border: 1px solid gray;
+}
+
+html.dark > body {
+  filter: invert(100%);
+  background-color: rgb(29, 32, 31) !important;
+}
+
+</style>

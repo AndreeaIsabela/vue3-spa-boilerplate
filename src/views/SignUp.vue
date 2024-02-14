@@ -86,11 +86,3 @@ const register = handleSubmit(async values => {
           a.alert-link(href='#') wrong
           | . Try again later
 </template>
-
-<style>
-.validation-error {
-  margin-top: 0.25rem;
-  font-size: 0.875em;
-  color: var(--bs-form-invalid-color);
-}
-</style>

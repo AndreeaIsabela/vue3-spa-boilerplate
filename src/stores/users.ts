@@ -25,7 +25,6 @@ export const useUserStore = defineStore('users', (): UserStore => {
     } catch(error) {
       console.log(error);
     }
-
   };
 
   return { token, isLoggedIn, destroySession, authenticateUser };

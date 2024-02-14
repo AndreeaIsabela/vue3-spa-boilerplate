@@ -56,11 +56,3 @@ const authenticate = handleSubmit(async values => {
             span {{ errors.password }}
         button.btn.btn-info.w-100(type='submit') Log In
 </template>
-
-<style>
-.validation-error {
-  margin-top: 0.25rem;
-  font-size: 0.875em;
-  color: var(--bs-form-invalid-color);
-}
-</style>
