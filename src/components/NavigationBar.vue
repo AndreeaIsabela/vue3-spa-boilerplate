@@ -12,14 +12,14 @@ const logOut = () => {
 </script>
 
 <template lang="pug">
-nav#navbar.navbar.navbar-expand-lg.bg-light 
+nav#navbar.navbar.navbar-expand-lg.bg-body-tertiary
   .container-fluid
     a.navbar-brand(href='#') Vue SPA Boilerplate
     
-    button.navbar-toggler(v-if='userStore.isLoggedIn' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+    button.navbar-toggler(v-if='userStore.isLoggedIn' type='button' data-bs-toggle='collapse' data-bs-target='#navbarColor03' aria-controls='navbarColor03' aria-expanded='false' aria-label='Toggle navigation')
       span.navbar-toggler-icon
 
-    navbarNav.collapse.navbar-collapse
+    #navbarColor03.collapse.navbar-collapse
       ul.navbar-nav.ms-auto.mt-2.mt-lg-0
         li.nav-item(v-if='!userStore.isLoggedIn')
           router-link.nav-link(:to="{ name: 'login' }") Login
