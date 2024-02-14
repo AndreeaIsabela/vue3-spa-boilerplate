@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
+import { userApi } from '@/api/user';
 
 import type { ComputedRef, Ref } from 'vue';
 import type { UserStore } from '@/types/UserStore';
@@ -13,10 +14,18 @@ export const useUserStore = defineStore('users', (): UserStore => {
     localStorage.removeItem('token');
   };
 
-  const authenticateUser = (email: string, password: string): void => {
-    const jwt: string = 'secret_token';
-    localStorage.setItem('token', jwt);
-    token.value = jwt;
+  const authenticateUser = async (email: string, password: string): Promise<void> => {
+    try {
+      const resp: any = await userApi.authenticate({
+        email, 
+        password
+      });
+      localStorage.setItem('token', resp.jwt);
+      token.value = resp.jwt;
+    } catch(error) {
+      console.log(error);
+    }
+
   };
 
   return { token, isLoggedIn, destroySession, authenticateUser };
