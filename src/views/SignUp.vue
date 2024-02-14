@@ -9,6 +9,8 @@ import { userApi } from '@/api/user';
 
 const router: Router = useRouter();
 
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 const loginSchema = yup.object({
   email: yup.string().required().email(),
   password: yup.string().required().min(8),
@@ -59,16 +61,22 @@ const register = handleSubmit(async values => {
             span {{ errors.email }}
 
         .form-group.mt-4.mb-4(:class='{"has-danger": errors.password && meta.touched}')
-          .form-floating
-            input.form-control(name='password' type='password' :class='{"is-invalid": errors.password && meta.touched}' v-model='password' :bind='passwordAttrs' placeholder='Password')
-            label(for="password") Password
+          .input-group
+            .form-floating
+              input.form-control(name='password' :class='{"is-invalid": errors.password && meta.touched}' :type='showPassword ? "text" : "password"' v-model='password' :bind='passwordAttrs' placeholder='Password')
+              label(for="password") Password
+            button.btn.btn-light(type='button' @click='showPassword = !showPassword') 
+              i.fa.fa-fw(:class='showPassword ? "fa-eye" : "fa-eye-slash"')
           .validation-error(v-if='errors.password && meta.touched')
             span {{ errors.password }}
 
         .form-group.mb-4(:class='{"has-danger": errors.passwordConfirmation && meta.touched}')
-          .form-floating
-            input.form-control(name='password-confirmation' type='password' :class='{"is-invalid": errors.passwordConfirmation && meta.touched}' v-model='passwordConfirmation' :bind='passwordConfirmationAttrs' placeholder='Password confirmation')
-            label(for="password-confirmation") Password Confirmation
+          .input-group
+            .form-floating
+              input.form-control(name='password-confirmation' :type='showConfirmPassword ? "text" : "password"' :class='{"is-invalid": errors.passwordConfirmation && meta.touched}' v-model='passwordConfirmation' :bind='passwordConfirmationAttrs' placeholder='Password confirmation')
+              label(for="password-confirmation") Password Confirmation
+            button.btn.btn-light(type='button' @click='showConfirmPassword = !showConfirmPassword') 
+              i.fa.fa-fw(:class='showConfirmPassword ? "fa-eye" : "fa-eye-slash"')
           .validation-error(v-if='errors.passwordConfirmation && meta.touched')
             span {{ errors.passwordConfirmation }}
 
